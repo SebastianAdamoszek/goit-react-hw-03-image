@@ -3,7 +3,6 @@ import Searchbar from './Searchbar/Searchbar.js';
 import ImageGallery from './ImageGallery/ImageGallery.js';
 import styles from '../components/Button/Button.module.css';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -49,25 +48,38 @@ class App extends Component {
   };
 
   handleSearch = newQuery => {
-    this.setState({
-      query: newQuery,
-      page: 1,
-      images: [],
-    });
-    this.fetchData();
+    const trimmedQuery = newQuery.trim();
+
+    if (trimmedQuery.length > 0) {
+      this.setState(
+        {
+          query: trimmedQuery,
+          page: 1,
+          images: [],
+          loading: true,
+        },
+        () => {
+          this.fetchData();
+        }
+      );
+    }
   };
 
   handleLoadMore = () => {
-    this.setState(
-      prevState => ({ page: prevState.page + 1 }),
-      () => {
-        this.fetchData();
-      }
-    );
+    const { images, page, loading } = this.state;
+
+    if (images.length > 0 && !loading) {
+      this.setState(
+        prevState => ({ page: prevState.page + 1 }),
+        () => {
+          this.fetchData();
+        }
+      );
+    }
   };
 
   render() {
-    const { loading } = this.state;
+    const { loading, images } = this.state;
 
     return (
       <div>
@@ -78,7 +90,11 @@ class App extends Component {
           onImageClick={this.handleImageClick}
         />
         <div className={styles.Button__box}>
-          <button className={styles.Button} onClick={this.handleLoadMore}>
+          <button
+            className={styles.Button}
+            onClick={this.handleLoadMore}
+            disabled={images.length === 0 || loading}
+          >
             Load More
           </button>
         </div>
