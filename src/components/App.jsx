@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Searchbar from './Searchbar/Searchbar.js';
 import ImageGallery from './ImageGallery/ImageGallery.js';
-import styles from '../components/Button/Button.module.css';
+import Button from './Button/Button.js';
 
 class App extends Component {
   constructor(props) {
@@ -89,15 +89,9 @@ class App extends Component {
           images={this.state.images}
           onImageClick={this.handleImageClick}
         />
-        <div className={styles.Button__box}>
-          <button
-            className={styles.Button}
-            onClick={this.handleLoadMore}
-            disabled={images.length === 0 || loading}
-          >
-            Load More
-          </button>
-        </div>
+        <Button onClick={this.handleLoadMore}
+          hasMore={images.length > 0}
+        />
       </div>
     );
   }
