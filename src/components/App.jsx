@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Searchbar from './Searchbar/Searchbar.js';
 import ImageGallery from './ImageGallery/ImageGallery.js';
+import Loader from './Loader/Loader.js';
 import Button from './Button/Button.js';
 
 class App extends Component {
@@ -84,14 +85,13 @@ class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={this.handleSearch} />
-        {loading && <div>Loading...</div>}
+
         <ImageGallery
           images={this.state.images}
           onImageClick={this.handleImageClick}
         />
-        <Button onClick={this.handleLoadMore}
-          hasMore={images.length > 0}
-        />
+        <Loader isLoading={loading} type="Puff" />
+        <Button onClick={this.handleLoadMore} hasMore={images.length > 0} />
       </div>
     );
   }
