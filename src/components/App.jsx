@@ -66,7 +66,7 @@ class App extends Component {
   };
 
   handleLoadMore = () => {
-    const { images, page, loading } = this.state;
+    const { images, loading } = this.state;
 
     if (images.length > 0 && !loading) {
       this.setState(
