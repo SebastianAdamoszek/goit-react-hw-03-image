@@ -4,6 +4,7 @@ import ImageGallery from './ImageGallery/ImageGallery.js';
 import Loader from './Loader/Loader.js';
 import Button from './Button/Button.js';
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -90,7 +91,7 @@ class App extends Component {
           images={this.state.images}
           onImageClick={this.handleImageClick}
         />
-        <Loader isLoading={loading} type="Puff" />
+        <Loader isLoading={loading} />
         <Button onClick={this.handleLoadMore} hasMore={images.length > 0} />
       </div>
     );
