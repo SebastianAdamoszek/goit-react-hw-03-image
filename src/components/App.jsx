@@ -50,8 +50,8 @@ class App extends Component {
       const data = await response.json();
       const formattedImages = data.hits.map(image => ({
         id: image.id,
-        webformatURL: image.webformatURL,
-        largeImageURL: image.largeImageURL,
+        webformatURL: image.webformatURL.replace(/^http:/, 'https:'),
+        largeImageURL: image.largeImageURL.replace(/^http:/, 'https:'),
         altText: image.altText,
       }));
 
@@ -68,7 +68,7 @@ class App extends Component {
   handleSearch = newQuery => {
     const trimmedQuery = newQuery.trim();
 
-    if (trimmedQuery.length > 0) {
+    if (trimmedQuery.length > 0 && trimmedQuery !== this.state.query) {
       this.setState({
         query: trimmedQuery,
         page: 1,
