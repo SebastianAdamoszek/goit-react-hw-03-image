@@ -1,34 +1,38 @@
 import React from 'react';
-import * as basicLightbox from 'basiclightbox';
-import 'basiclightbox/dist/basicLightbox.min.css';
 import styles from './Modal.module.css';
 
-const Modal = ({ largeImageURL, altText, onClose }) => {
-  const instance = basicLightbox.create(`
-    <div className={styles.Overlay}>
-      <div className={styles.Modal}>
-        <img src="${largeImageURL}" alt="${altText}" />
-      </div>
-    </div>
-  `);
+class Modal extends React.Component {
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleEscapeKey);
+  }
 
-  instance.show();
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleEscapeKey);
+    this.props.onClose();
+  }
 
-  const handleEscapeKey = event => {
+  handleEscapeKey = event => {
     if (event.key === 'Escape') {
-      handleClose();
+      this.handleClose();
     }
   };
 
-  document.addEventListener('keydown', handleEscapeKey);
-
-  const handleClose = () => {
-    document.removeEventListener('keydown', handleEscapeKey);
-    instance.close();
-    onClose();
+  handleClose = () => {
+    document.removeEventListener('keydown', this.handleEscapeKey);
+    this.props.onClose();
   };
 
-  return <div className={styles.Overlay} onClick={handleClose}></div>;
-};
+  render() {
+    const { largeImageURL, altText } = this.props;
+
+    return (
+      <div className={styles.Overlay} onClick={this.handleClose}>
+        <div className={styles.Modal}>
+          <img src={largeImageURL} alt={altText} />
+        </div>
+      </div>
+    );
+  }
+}
 
 export default Modal;

@@ -19,16 +19,16 @@ class App extends Component {
   }
 
   componentDidMount() {
-   
     if (this.state.query.trim().length > 0) {
       this.fetchData();
     }
   }
-  
 
   componentDidUpdate(prevProps, prevState) {
-   
-    if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
+    if (
+      prevState.query !== this.state.query ||
+      prevState.page !== this.state.page
+    ) {
       this.fetchData();
     }
   }
@@ -52,6 +52,7 @@ class App extends Component {
         id: image.id,
         webformatURL: image.webformatURL,
         largeImageURL: image.largeImageURL,
+        altText: image.altText,
       }));
 
       this.setState(prevState => ({
@@ -68,14 +69,12 @@ class App extends Component {
     const trimmedQuery = newQuery.trim();
 
     if (trimmedQuery.length > 0) {
-      this.setState(
-        {
-          query: trimmedQuery,
-          page: 1,
-          images: [],
-          loading: true,
-        }
-      );
+      this.setState({
+        query: trimmedQuery,
+        page: 1,
+        images: [],
+        loading: true,
+      });
     }
   };
 
@@ -83,10 +82,16 @@ class App extends Component {
     const { images, loading } = this.state;
 
     if (images.length > 0 && !loading) {
-      this.setState(
-        prevState => ({ page: prevState.page + 1 }),
-      );
+      this.setState(prevState => ({ page: prevState.page + 1 }));
     }
+  };
+
+  handleImageClick = selectedImage => {
+    this.setState({ selectedImage });
+  };
+
+  closeModal = () => {
+    this.setState({ selectedImage: null });
   };
 
   render() {
