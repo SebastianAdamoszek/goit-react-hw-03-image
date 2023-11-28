@@ -5,7 +5,6 @@ import Loader from './Loader/Loader.js';
 import Button from './Button/Button.js';
 import Modal from './Modal/Modal.js';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +16,21 @@ class App extends Component {
       page: 1,
       perPage: 12,
     };
+  }
+
+  componentDidMount() {
+   
+    if (this.state.query.trim().length > 0) {
+      this.fetchData();
+    }
+  }
+  
+
+  componentDidUpdate(prevProps, prevState) {
+   
+    if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
+      this.fetchData();
+    }
   }
 
   fetchData = async () => {
@@ -60,9 +74,6 @@ class App extends Component {
           page: 1,
           images: [],
           loading: true,
-        },
-        () => {
-          this.fetchData();
         }
       );
     }
@@ -74,19 +85,8 @@ class App extends Component {
     if (images.length > 0 && !loading) {
       this.setState(
         prevState => ({ page: prevState.page + 1 }),
-        () => {
-          this.fetchData();
-        }
       );
     }
-  };
-
-  handleImageClick = selectedImage => {
-    this.setState({ selectedImage });
-  };
-
-  closeModal = () => {
-    this.setState({ selectedImage: null });
   };
 
   render() {
