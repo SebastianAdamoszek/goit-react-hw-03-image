@@ -3,6 +3,7 @@ import Searchbar from './Searchbar/Searchbar.js';
 import ImageGallery from './ImageGallery/ImageGallery.js';
 import Loader from './Loader/Loader.js';
 import Button from './Button/Button.js';
+import Modal from './Modal/Modal.js';
 
 
 class App extends Component {
@@ -80,19 +81,31 @@ class App extends Component {
     }
   };
 
+  handleImageClick = selectedImage => {
+    this.setState({ selectedImage });
+  };
+
+  closeModal = () => {
+    this.setState({ selectedImage: null });
+  };
+
   render() {
-    const { loading, images } = this.state;
+    const { loading, images, selectedImage } = this.state;
 
     return (
       <div>
         <Searchbar onSubmit={this.handleSearch} />
-
-        <ImageGallery
-          images={this.state.images}
-          onImageClick={this.handleImageClick}
-        />
+        <ImageGallery images={images} onImageClick={this.handleImageClick} />
         <Loader isLoading={loading} />
         <Button onClick={this.handleLoadMore} hasMore={images.length > 0} />
+
+        {selectedImage && (
+          <Modal
+            largeImageURL={selectedImage.largeImageURL}
+            altText={selectedImage.altText}
+            onClose={this.closeModal}
+          />
+        )}
       </div>
     );
   }
